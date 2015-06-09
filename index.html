@@ -1,0 +1,122 @@
+<html>
+<head>
+  <title>LEELA_LEARNING</title>
+  <link rel="stylesheet" href="css/leela.css" type="text/css" />
+  <script src="js/leela.js"></script>
+</head>
+<body>
+   <a href="index.html"><h1><center style="position: fixed; display: block; text-align: center;text-transform:uppercase;font-size:initial;color:black;right:20px;background-color:skyblue;opacity: 2; padding: inherit;"> HOME </center></h1></a>   
+  <h1><center style="background: none repeat scroll 0% 0% wheat; font-family: -moz-fixed;">BUILDING A WEBSITE! </h1>
+<div class="jumbotron">
+<div class="container">
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<h4><caption>LAMP stack on Ubuntu 14.04</caption></h4>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+<p>A "LAMP" stack is a group of open source software that is typically installed together to enable a server to host dynamic websites and web apps. This term is actually an acronym which represents the Linux operating system, with the Apache web server. The site data is stored in a MySQL database, and dynamic content is processed by PHP.</p>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+</div>
+</div>
+<br></br>
+  <center><a href="#" onclick="show_blog_1()">HOW DO I INSTALL APACHE WEB SERVER ON UBUNTU?</a></center><br></br> 
+  <center><a href="#" onclick="show_blog_2()">HOW DO I INSTALL MySQL DBMS?</a></center><br></br>
+  <center><a href="#" onclick="show_blog_3()">HOW DO I INSTALL PHP?</a></center><br></br>
+<div id="blog_1">
+<div class="jumbotron">
+<div class="container">
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   <h4><caption><center>INSTALL APACHE SERVER</center></caption></h4>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   <P>The Apache web server is currently the most popular web server in the world, which makes it a great default choice for hosting a website.</P>
+   <P>we can get started by typing these commands:</P>
+   <pre><code>
+     sudo apt-get update
+     sudo apt-get install apache2</code></pre>
+ 
+   <p>Since we are using a sudo command, these operations get executed with root privileges. It will ask you for your regular user's password to verify your intentions.</p>
+   <p>Afterwards, your web server is installed.</p>
+   <p>You can do a spot check right away to verify that everything went as planned by visiting your server's public IP address in your web  browser.</p>
+   <p>You will see the default Ubuntu 14.04 Apache web page, which is there for informational and testing purposes. It should look something like this:</p>
+   <img alt="Ubuntu 14.04 Apache default" src="images/default_apache.png">
+   <p>If you see this page, then your web server is now correctly installed.</p>
+</div>
+</div>
+</div>
+
+<div id="blog_2">
+<div class="jumbotron">
+<div class="container">
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    <h4><caption><center>INSTALL MySql</center></caption></h4>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+   <p>Now that we have our web server up and running, it is time to install MySQL. MySQL is a database management system. Basically, it will organize and provide access to databases where our site can store information.</p>
+    <p>we can get started by typing these command:</p>
+    <code>sudo apt-get install mysql-server php5-mysql</code>
+    <p>During the installation, your server will ask you to select and confirm a password for the MySQL "root" user. This is an administrative account in MySQL that has increased privileges. Think of it as being similar to the root account for the server itself (the one you are configuring now is a MySQL-specific account however).</p>
+    <p>When the installation is complete, we need to run some additional commands to get our MySQL environment set up securely.</p>   
+    <p>First, we need to tell MySQL to create its database directory structure where it will store its information. You can do this by typing:</p>
+    <code>sudo mysql_install_db</code>
+    <p>Afterwards, we want to run a simple security script that will remove some dangerous defaults and lock down access to our database system a little bit. Start the interactive script by running:</p>
+    <code>sudo mysql_secure_installation</code>
+    <p>You will be asked to enter the password you set for the MySQL root account. Next, it will ask you if you want to change that password. If you are happy with your current password, type "n" for "no" at the prompt.</p>
+    <p>For the rest of the questions, you should simply hit the "ENTER" key through each prompt to accept the default values. This will remove some sample users and databases, disable remote root logins, and load these new rules so that MySQL immediately respects the changes we have made.</p>
+    <p>At this point, your database system is now set up and we can move on.</p>
+</div>
+</div>
+</div>
+
+<div id="blog_3">
+<div class="jumbotron">
+<div class="container">
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+       <h4><caption><center>INSTALL PHP</center></caption></h4>
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+       <p>PHP is the component of our setup that will process code to display dynamic content. It can run scripts, connect to our MySQL databases to get information, and hand the processed content over to our web server to display.</p>
+	<p>To install PHP type following command</p>
+       <code> sudo apt-get install php5 libapache2-mod-php5 php5-mcrypt </code> 
+       <p>In most cases, we'll want to modify the way that Apache serves files when a directory is requested. Currently, if a user requests a directory from the server, Apache will first look for a file called <code>index.html.</code> We want to tell our web server to prefer PHP files, so we'll make Apache look for an <code>index.php</code> file first.</p>
+	<p>To do this, type this command to open the <code>dir.conf</code> file in a text editor with root privileges:</p>
+	<code>sudo nano /etc/apache2/mods-enabled/dir.conf</code>
+	<p>It will look like this:</p>
+	<pre>&lt;IfModule mod_dir.c&gt;
+    DirectoryIndex index.html index.cgi index.pl <span class="highlight" style="color: tomato;">index.php</span> index.xhtml index.htm 
+&lt;/IfModule&gt;
+       </pre>
+	<p>We want to move the PHP index file highlighted above to the first position after the <code>DirectoryIndex</code> specification, like this:</p>
+	<pre>&lt;IfModule mod_dir.c&gt;
+    DirectoryIndex <span class="highlight" style="color: tomato;">index.php</span> index.html index.cgi index.pl index.xhtml index.htm 
+&lt;/IfModule&gt;
+ 	</pre>
+        <p>When you are finished, save and close the file by pressing "CTRL-X". You'll have to confirm the save by typing "Y" and then hit "ENTER" to confirm the file save location.</p>
+        <p>After this, we need to restart the Apache web server in order for our changes to be recognized. You can do this by typing this:</p>
+	<code> sudo service apache2 restart</code>
+	<h4>Test PHP Processing on your Web Server</H4>
+	<p>In order to test that our system is configured properly for PHP, we can create a very basic PHP script.</p>
+	<p>We will call this script <code> info.php</code>. In order for Apache to find the file and serve it correctly, it must be saved to a very specific directory, which is called the "web root".</p>
+	 <p>In Ubuntu 14.04, this directory is located at <code>/var/www/html/</code>. We can create the file at that location by typing:</p>
+         <code> sudo nano /var/www/html/info.php</code>
+	 <p>This will open a blank file. We want to put the following text, which is valid PHP code, inside the file:</p>
+	<code><pre>
+	&lt;?php
+        phpinfo();
+        ?&gt;
+	</pre></code>
+	<p>When you are finished, save and close the file.</p>
+	<p>Now we can test whether our web server can correctly display content generated by a PHP script. To try this out, we just have to visit this page in our web browser. You'll need your server's public IP address again.</p>
+        <p>The address you want to visit will be:</p>
+        <code>http://your_server_IP_address/info.php</code>
+        <p>The page that come to you should look something like this:</p>
+        <img alt="Ubuntu 14.04 php default" src="images/default_php.png">
+	<p>This page basically gives you information about your server from the perspective of PHP. It is useful for debugging and to ensure that your settings are being applied correctly.</p>
+        <p>If this was successful, then your PHP is working as expected.</p>
+	<p>You probably want to remove this file after this test because it could actually give information about your server to unauthorized users. To do this, you can type this:</p>
+        <code>sudo rm /var/www/html/info.php</code>
+
+	<!--div class="line-space"></div>
+	<div class="code1">sudo rm /var/www/html/info.php</div-->
+
+	<br><p>Now you've installed a platform that will allow you to install most kinds of websites and web software on your server. </p></br>
+</div>
+</div>
+</div>
+</body>
+</html>
